@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Covid 19</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="initial-scale=1, user-scalable=no, maximum-scale=1, width=device-width, height=device-height">
+    
+<link rel="stylesheet" type="text/css" href="style.css">
+<style>
+
+#image-top{
+    color: white;
+    position: relative;
+    width: 98%;
+    height: 30vh;
+    margin-bottom: 5vh;
+    background-color: rgb(63, 82, 63);
+}
+.title-center{
+    font-size: 5vh;
+    font-family: Segoe UI;
+    position: absolute;
+      top:50%;
+      left:50%;
+      transform:translate(-50%, -50%);
+}
+#container {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1vh;
+    background-color: #fefefe;
+    border: 0.5vh solid #888;
+    border-radius: 3vh;
+}
+    #div-mobile {
+                display: -ms-flexbox;
+                display: flex;
+                -ms-flex-wrap: wrap;
+                flex-wrap: wrap;
+                width: 95%; 
+                margin: auto auto auto auto;
+            }
+            @media (min-width: 150vh) {
+              .mobile {
+                    -ms-flex-preferred-size: 0;
+                    flex-basis: 0;
+                    -ms-flex-positive: 1;
+                    flex-grow: 2;
+                    max-width: 100%;
+              }}
+            .mobile{
+                 position: relative;
+                 width: 100%;
+                 height: 50%;
+                 padding-right: 15px;
+                 padding-left: 15px;
+              }
+            #mobile1{
+                color: #E0E0E0;
+                margin-bottom: 10vh;
+                padding-bottom: 3vh;
+                border-radius: 1vh;
+                background-color:#333333;
+              }
+            #mobile2{
+              background-color:white;
+            }
+        .class-choice {
+          display: block;
+          width: 100%;
+          height: calc(1.5em + 0.75rem + 2px);
+          padding: 0.375rem 0.75rem;
+          font-size: 1rem;
+          font-weight: 400;
+          line-height: 1.5;
+          color: #495057;
+          background-color: #BEBEBE;
+          background-clip: padding-box;
+          border: 1px solid #ced4da;
+          border-radius: 0.25rem;
+          transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+        .class-choice:focus {
+          color: #495057;
+          background-color: #F0F0F0;
+          border-color: #80bdff;
+          outline: 0;
+          box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+        .small-help{
+         width: 100%;
+         text-align: center;
+         font-style: italic;
+        }
+        #form{
+            position: relative;
+        }
+        .valider{
+            position: absolute;
+            color: black;
+                padding: 1vh 1vh 1vh 1vh ;
+                font-size: 2.4vh;
+                border: none;
+                cursor: pointer;
+                width: 12vh;
+                opacity: 0.9;
+                border-radius: 1vh;
+                border: 0.4vh outset #c0c0c0;
+                top:100%;
+                left:50%;
+                transform:translate(-50%, -70%);
+        }
+        #id-display{
+            font-size: 2.5vh;
+            display:flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #grid1-style{
+                width: 70%; 
+                height: 8vw; 
+                display: flex;
+                margin: auto auto auto auto;
+            }
+            .elt1{
+                flex: auto;
+            }
+            .elt2{
+                flex: auto;
+            }
+            input[type=date]{
+                font-size: 2vh;
+                border: none;
+                background: #bebebe;
+            }
+
+</style>
+</head>
+<body>
+    <div id="image-top">
+        <h1 class="title-center">COVID 19</h1>
+    </div>
+    <div id="container">
+        
+        <div id="div-mobile">
+            
+            <div class="mobile" id="mobile1">
+                <h2>Find information on the progression of covid 19</h2>
+                <form action="/views/index.html" id="form" method="post">
+                    <div class="">
+                        <label for="id-continent">Continent</label>
+                        <select id="id-continent" class="class-choice" name="continent">
+                            <option selected value="0"> Choose</option> 
+                            <option value="afrique"> Afrique</option> 
+                            <option value="amerique"> Amerique</option> 
+                            <option value="asie"> Asie</option> 
+                            <option value="europe"> Europe</option> 
+                            <option value="oceanie"> Oceanie</option> 
+                        </select>
+                        <small id="emailHelp" class="small-help">Your Continent</small>
+                    </div><br>
+                    <div class="">
+                        <label for="id-country">Country</label>
+                        <select id="id-country" class="class-choice" name="country">
+                            <option selected value="0"> Choose</option> 
+                        </select>
+                        <small id="emailHelp" class="small-help">Your Country</small>
+                    </div>
+                    <div id="grid1-style">
+                        <div class="elt1">
+                            <label for="id-bdate">From</label><br>
+                            <input type="date" id="id-bdate" placeholder="Date" name="begin_date"><br>
+                            <small id="emailHelp" class="small-help">Start date</small>
+                        </div>
+                        <div class="elt2">
+                            <label for="id-edate">To</label><br>
+                            <input type="date" id="id-date" placeholder="Date" name="end_date"><br>
+                            <small id="emailHelp" class="small-help">End date</small>
+                        </div>
+                    </div>
+                    <br>
+                    <button type="submit" class="valider" style="font-size:2vh;">Search</button>
+                    <br>
+                </form>
+            </div>
+
+            <div class="mobile" id="mobile2">
+                <div id="id-display">
+                    <%= datan%>
+                <!--<table>
+                   <tbody>
+                       <tr>
+                        <td><h2>Country: <%= datan.Country %></h2></td>
+                       </tr>
+                        <tr>
+                            <td>Last Update </td>
+                            <td><%= datan.Last_Update%></td>
+                        </tr>
+                        <tr><td><h3>Search Between </h3></td></tr>
+                        <tr style="font-weight: bold;">
+                            <td><%= datan.begin_date%></td>
+                            <td>And</td>
+                            <td><%= datan.end_date%></td>
+                        </tr>
+                        <tr style="color:rgb(121, 121, 39)">
+                            <td>Confirme Case</td>
+                            <td><%= datan.search_confirmed%></td>
+                        </tr>
+                        <tr style="color:rgb(25, 134, 4)">
+                            <td>Recovered Case</td>
+                            <td><%= datan.search_recovered%></td>
+                        </tr>
+                        <tr style="color:red;">
+                            <td>Deaths Case</td>
+                            <td><%= datan.search_deaths%></td>
+                        </tr>
+                        <tr><td colspan="2"><h3>Information since the start of covid19 in <%= datan.Country %></h3></td></tr>
+                        
+                        <tr style="color:rgb(121, 121, 39)">
+                            <td>Confirme Case</td>
+                            <td><%= datan.Confirmed%></td>
+                        </tr>
+                        <tr style="color:">
+                            <td>Active Case</td>
+                            <td><%= datan.Active%></td>
+                        </tr>
+                        <tr style="color:rgb(25, 134, 4)">
+                            <td>Recovered Case</td>
+                            <td><%= datan.Recovered%></td>
+                        </tr>
+                        <tr style="color:red;">
+                            <td>Deaths Case</td>
+                            <td><%= datan.Deaths%></td>
+                        </tr>
+                
+                    </tbody>
+                </table>-->
+                </div>
+            </div>
+        </div>
+    </div>
+        
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+        <script>
+        $(document).ready(function() {
+            let afrique = ['Algeria','Angola','Benin','Botswana','Burkina Faso','Burundi','Cabo Verde','Cameroon','Central African Republic','Chad','Comoros','Congo (Brazzaville)','Congo (Kinshasa)','Cote d\' Ivoire','Djibouti','Egypt','Equatorial Guinea','Eritrea','Eswatini','Ethiopia','Gabon','Gambia','Ghana','Guinea','Guinea-Bissau','Kenya','Lesotho','Liberia','Libya','Madagascar','Malawi','Mali','Mauritania','Mauritius','Morocco','Mozambique','Namibia','Niger','Nigeria','Rwanda','Sao Tome and Principe','Senegal','Seychelles','Sierra Leone','Somalia','South Africa','South Sudan','Sudan','Tanzania','Togo','Tunisia','Uganda','Western Sahara','Zambia','Zimbabwe'];
+            let amerique = ['Antigua and Barbuda', 'Argentina', 'Bahamas', 'Barbados','Belize', 'Bolivia','Brazil','Canada','Chile','Colombia','Costa Rica','Cuba','Dominica','Dominican Republic','Ecuador','El Salvador','Grenada','Guatemala','Guyana','Haiti','Honduras','Jamaica','Mexico','Nicaragua','Panama','Paraguay','Peru','Saint Kitts and Nevis','Saint Lucia','Saint Vincent and the Grenadines','Suriname','Trinidad and Tobago','US','Uruguay','Venezuela'];
+            let asie = ['Afghanistan', 'Armenia', 'Azerbaijan', 'Bahrain','Bangladesh', 'Bhutan','Brunei','Burma','Cambodia','China','Georgia','India','Indonesia','Iran','Iraq','Israel','Japan','Jordan','Kazakhstan','Korea, South','Kuwait','Kyrgyzstan','Laos','Lebanon','Malaysia','Maldives','Mongolia','Montenegro','Nepal','Oman','Pakistan','Philippines','Qatar','Russia','Saudi Arabia','Singapore','Sri Lanka','Syria','Taiwan*','Tajikistan','Thailand','Timor-Leste','Turkey','United Arab Emirates','Uzbekistan','Vietnam','West Bank and Gaza','Yemen'];
+            let europe = ['Albania','Andorra','Austria','Belarus','Belgium','Bosnia and Herzegovina','Bulgaria','Croatia','Cyprus','Czechia','Denmark','Estonia','Finland','France','Germany','Greece','Holy See','Hungary','Iceland','Ireland','Italy','Kosovo','Latvia','Liechtenstein','Lithuania','Luxembourg','Malta','Moldova','Monaco','Netherlands','North Macedonia','Norway','Poland','Portugal','Romania','San Marino','Serbia','Slovakia','Slovenia','Spain','Sweden','Switzerland','Ukraine','United Kingdom'];
+            let oceanie = ['Australia','Géographie','Histoire et Archéologie','Philosophie','Scoliologie','Fiji','New Zealand','Papua New Guinea'];
+            let autre = ['Diamond Princess','MS Zaandam'];
+            
+             console.log("tes fou")
+            
+        $("#id-continent").change(function() {
+            console.log("tes fou bien")
+          let el = $(this) ;
+          let element = document.getElementById("id-country");
+            while (element.firstChild) {
+                element.removeChild(element.firstChild);
+            }
+            $("#id-country").append("<option selected value=''>Choose</option>");
+            if(el.val() === "afrique" ) 
+            for(let i=0; i<afrique.length; i++)
+              $("#id-country").append("<option value='"+afrique[i]+"'>"+afrique[i]+"</option>");
+              
+            if(el.val() === "amerique" ) 
+            for(let i=0; i<amerique.length; i++)
+              $("#id-country").append("<option value='"+amerique[i]+"'>"+amerique[i]+"</option>");
+              
+            if(el.val() === "asie" ) 
+            for(let i=0; i<asie.length; i++)
+              $("#id-country").append("<option value='"+asie[i]+"'>"+asie[i]+"</option>");
+              
+            if(el.val() === "europe" ) 
+            for(let i=0; i<europe.length; i++)
+              $("#id-country").append("<option value='"+europe[i]+"'>"+europe[i]+"</option>");
+            
+            if(el.val() === "oceanie" ) 
+            for(let i=0; i<oceanie.length; i++)
+              $("#id-country").append("<option value='"+oceanie[i]+"'>"+oceanie[i]+"</option>");
+              
+            
+            });
+        });
+        </script>
+</body>
+</html>
