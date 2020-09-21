@@ -2,7 +2,7 @@ from django.shortcuts import render
 import datetime
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import PolynomialFeatures
+from sklearn.preprocessing import PolynomialFeatures #pip install scikit-learn
 from sklearn import linear_model
 
 
