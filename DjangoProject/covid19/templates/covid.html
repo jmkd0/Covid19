@@ -1,0 +1,464 @@
+{% load static %}
+<html>
+    <!-- https://www.chartjs.org/docs/latest/getting-started/ -->
+    <!--https://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/maps/demo/tooltip/-->
+    <head>
+        <title>Covid 19</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="initial-scale=1, user-scalable=no, maximum-scale=1, width=device-width, height=device-height">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+        <script src="https://code.highcharts.com/maps/highmaps.js"></script>
+        <script src="https://code.highcharts.com/maps/modules/data.js"></script>
+        <script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
+        <script src="https://code.highcharts.com/maps/modules/offline-exporting.js"></script>
+        <script src="https://code.highcharts.com/mapdata/custom/world.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+
+<!-- Flag sprites service provided by Martijn Lafeber, https://github.com/lafeber/world-flags-sprite/blob/master/LICENSE -->
+<link rel="stylesheet" type="text/css" href="//github.com/downloads/lafeber/world-flags-sprite/flags32.css" />
+    </head>
+    
+    <body>
+        <div id="image-top">
+            <h1 class="title-center">COVID 19 DashBoard</h1>
+        </div>
+        <div id='reset' >
+            <a id="areset" href="/covid19">World Information</a>
+        </div>
+        <div id="container">
+            
+            <div id="div-mobile">
+                
+                <div class="mobile" id="mobile1">
+                    <h2>Find information on the progression of covid 19</h2>
+                    <form action="/getCountry/" id="form" method="post">{% csrf_token %}
+                        <div class="">
+                            <label for="id-continent">Continent</label>
+                            <select id="id-continent" class="class-choice" name="continent">
+                                <option selected value=""> Choose</option> 
+                                <option value="afrique"> Africa</option> 
+                                <option value="amerique"> America</option> 
+                                <option value="asie"> Asia</option> 
+                                <option value="europe"> Europe</option> 
+                                <option value="oceanie"> Oceania</option> 
+                            </select>
+                            <small id="emailHelp" class="small-help">Your Continent</small>
+                        </div><br>
+                        <div class="">
+                            <label for="id-country">Country</label>
+                            <select id="id-country" class="class-choice" name="country">
+                                <option selected value=""> Choose</option> 
+                            </select>
+                            <small id="emailHelp" class="small-help">Your Country</small>
+                        </div>
+                        <br>
+                        <div class="elt1">
+                            <label for="id-bdate">Want to predict cases in future ?</label><br>
+                            <input type="date" id="idbdate" placeholder="Enter your predicted date" name="date">
+                            <small id="emailHelp" class="small-help">Enter your predicted date</small>
+                        </div>
+                        <br>
+                        <button type="submit" class="valider" style="font-size:2vh;">Search</button>
+                        <br>
+                    </form>
+                </div>
+                <div class="mobile" id="mobile2">
+                    <div id="id-display">
+                        <table>
+                           <tbody>
+                               <tr>
+                                <td><h1>Country: {{country|safe}}</h1></td>
+                               </tr>
+                               <tr><td colspan="2"><h2>Information since the start of covid 19 in {{country|safe}}</h2></td></tr>
+                               
+                               {% if predict == True %}
+                                 <tr style="background-color: rgb(228, 230, 229); "><td colspan="2"><h2>Prediction of new cases until <span style="color:rgb(25, 28, 214)">{{predictedDate|safe}}</span></h2></td></tr>
+                                 <tr style="background-color: rgb(228, 230, 229); color:#36A2EB">
+                                     <td><h3>Forecast confirmed</h3></td>
+                                     <td><h3>{{confirmedForcast|safe}} new cases</h3></td>
+                                 </tr>
+                                 <tr style="background-color: rgb(228, 230, 229); color:#4BC0C0">
+                                     <td><h3>Forecast Recovered</h3></td>
+                                     <td><h3>{{recoveredForcast|safe}} new cases</h3></td>
+                                 </tr>
+                                 <tr style="background-color: rgb(228, 230, 229); color:#FF6384;">
+                                     <td><h3>Forecast Death</h3></td>
+                                     <td><h3>{{deathsForcast|safe}} new cases</h3></td>
+                                 </tr><hr><br>
+                               {% endif %}
+                                
+                                <tr>
+                                    <td><h3>Last Update</h3></td>
+                                    <td><h3>{{lastUpdate|safe}}</h3></td>
+                                </tr>
+                                <tr style="color:#36A2EB">
+                                    <td><h3>Confirmed</h3></td>
+                                    <td><h3>{{wholeConfirmed|safe}} cases</h3></td>
+                                </tr>
+                                <tr style="color:#4BC0C0">
+                                    <td><h3>Recovered</h3></td>
+                                    <td><h3>{{wholeRecovered|safe}} cases</h3></td>
+                                </tr>
+                                <tr style="color:#FF6384;">
+                                    <td><h3>Death </h3></td>
+                                    <td><h3>{{wholeDeaths|safe}} cases</h3></td>
+                                </tr>
+                                <tr style="color:">
+                                    <td><h3>Active </h3></td>
+                                    <td><h3>{{wholeActive|safe}} cases</h3></td>
+                                </tr>
+                                <hr>
+                                <tr style="font-weight: bold;">
+                                    <td></td>
+                                    <td><h2>Rate</h2></td>
+                                    <td></td>
+                                </tr>
+                                <tr style="color:#4BC0C0">
+                                    <td><h3>Recovered rate</h3></td>
+                                    <td><h3>{{rateRecovered|safe}}%</h3></td>
+                                </tr>
+                                <tr style="color:#FF6384;">
+                                    <td><h3>Death rate</h3></td>
+                                    <td><h3>{{rateDeaths|safe}}%</h3></td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <div id="div-graph-map">
+            <div class="mobile-graph-map">
+                {% if showMap == True %}
+                <div id="map"> </div>
+                {% elif showMap == False %}
+                <div id="diagram" style=""> 
+                    <canvas id="diagramChart" style="overflow: auto; white-space: nowrap;"></canvas>
+                </div>
+                {% endif %}
+            </div>
+            <div class="mobile-graph-map" id="graph">
+                
+                <canvas id="myChart" style="width:50vh; height: 800vh;"></canvas>
+                
+            </div>
+            
+            
+        </div>
+        
+    </body>
+    <style>
+        footer{
+            width:100%; 
+            height: 20vh; 
+            position: relative;
+            background-color:#333333;
+        }
+        #foottext{
+            color: white;
+            position: absolute;
+            top:50%;
+            left:50%;
+            transform:translate(-50%, -50%);
+        }
+    </style>
+    <footer>
+        <h2 id="foottext">2020-Copyright-J.M.K.D.</h2>
+    </footer>
+
+    <script>
+        var horizontalBarChartData = {
+			labels: {{countryNames|safe}},
+			datasets: [{
+				label: 'Confirmed',
+				backgroundColor: '#36A2EB',
+				borderColor: '#36A2EB',
+				data: {{confirmedDiagramm}}
+			}, 
+            {
+				label: 'Death',
+				backgroundColor: '#FF6384',
+				borderColor: '#FF6384',
+				data: {{deathsDiagramm}}
+			},
+            {
+				label: 'Recovered',
+				backgroundColor: '#4BC0C0',
+				borderColor: '#4BC0C0',
+				data: {{recoveredDiagramm}}
+			}]
+
+		};
+        let chartOptions = {
+            onClick: graphClickedEvent,
+            title: {
+				display: true,
+				text: 'Coronavirus Ranking cases in the World'
+			},
+            scales: {
+                  xAxes: [
+                    {
+                      scaleLabel: {
+                        display: true,
+                        labelString: "Number of Cases"
+                      },
+                      ticks: {
+                        maxRotation: 0
+                      }
+                    }
+                  ],
+                  yAxes: [
+                    {
+                      scaleLabel: {
+                        display: true,
+                        labelString: "Country Names"
+                      }
+                    }
+                  ]
+            }
+        };
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'horizontalBar',
+            data: horizontalBarChartData,
+            options: chartOptions
+        });
+
+
+        function graphClickedEvent(event, element){
+            if(element[0]){
+                let country = chart.data.labels[element[0]._index];
+                console.log(country)
+            }
+            
+            //let data = chart.data.labels[2]
+        }
+    
+    </script>
+           
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script>
+           $(document).ready(function() {
+               let afrique = ['Algeria','Angola','Benin','Botswana','Burkina Faso','Burundi','Cabo Verde','Cameroon','Central African Republic','Chad','Comoros','Congo (Brazzaville)','Congo (Kinshasa)','Cote d\' Ivoire','Djibouti','Egypt','Equatorial Guinea','Eritrea','Eswatini','Ethiopia','Gabon','Gambia','Ghana','Guinea','Guinea-Bissau','Kenya','Lesotho','Liberia','Libya','Madagascar','Malawi','Mali','Mauritania','Mauritius','Morocco','Mozambique','Namibia','Niger','Nigeria','Rwanda','Sao Tome and Principe','Senegal','Seychelles','Sierra Leone','Somalia','South Africa','South Sudan','Sudan','Tanzania','Togo','Tunisia','Uganda','Western Sahara','Zambia','Zimbabwe'];
+               let amerique = ['Antigua and Barbuda', 'Argentina', 'Bahamas', 'Barbados','Belize', 'Bolivia','Brazil','Canada','Chile','Colombia','Costa Rica','Cuba','Dominica','Dominican Republic','Ecuador','El Salvador','Grenada','Guatemala','Guyana','Haiti','Honduras','Jamaica','Mexico','Nicaragua','Panama','Paraguay','Peru','Saint Kitts and Nevis','Saint Lucia','Saint Vincent and the Grenadines','Suriname','Trinidad and Tobago','US','Uruguay','Venezuela'];
+               let asie = ['Afghanistan', 'Armenia', 'Azerbaijan', 'Bahrain','Bangladesh', 'Bhutan','Brunei','Burma','Cambodia','China','Georgia','India','Indonesia','Iran','Iraq','Israel','Japan','Jordan','Kazakhstan','Korea, South','Kuwait','Kyrgyzstan','Laos','Lebanon','Malaysia','Maldives','Mongolia','Montenegro','Nepal','Oman','Pakistan','Philippines','Qatar','Russia','Saudi Arabia','Singapore','Sri Lanka','Syria','Taiwan*','Tajikistan','Thailand','Timor-Leste','Turkey','United Arab Emirates','Uzbekistan','Vietnam','West Bank and Gaza','Yemen'];
+               let europe = ['Albania','Andorra','Austria','Belarus','Belgium','Bosnia and Herzegovina','Bulgaria','Croatia','Cyprus','Czechia','Denmark','Estonia','Finland','France','Germany','Greece','Holy See','Hungary','Iceland','Ireland','Italy','Kosovo','Latvia','Liechtenstein','Lithuania','Luxembourg','Malta','Moldova','Monaco','Netherlands','North Macedonia','Norway','Poland','Portugal','Romania','San Marino','Serbia','Slovakia','Slovenia','Spain','Sweden','Switzerland','Ukraine','United Kingdom'];
+               let oceanie = ['Australia','Géographie','Histoire et Archéologie','Philosophie','Scoliologie','Fiji','New Zealand','Papua New Guinea'];
+               let autre = ['Diamond Princess','MS Zaandam'];
+               
+                console.log("tes fou")
+               
+           $("#id-continent").change(function() {
+               console.log("tes fou bien")
+             let el = $(this) ;
+             let element = document.getElementById("id-country");
+               while (element.firstChild) {
+                   element.removeChild(element.firstChild);
+               }
+               $("#id-country").append("<option selected value=''>Choose</option>");
+               if(el.val() === "afrique" ) 
+               for(let i=0; i<afrique.length; i++)
+                 $("#id-country").append("<option value='"+afrique[i]+"'>"+afrique[i]+"</option>");
+                 
+               if(el.val() === "amerique" ) 
+               for(let i=0; i<amerique.length; i++)
+                 $("#id-country").append("<option value='"+amerique[i]+"'>"+amerique[i]+"</option>");
+                 
+               if(el.val() === "asie" ) 
+               for(let i=0; i<asie.length; i++)
+                 $("#id-country").append("<option value='"+asie[i]+"'>"+asie[i]+"</option>");
+                 
+               if(el.val() === "europe" ) 
+               for(let i=0; i<europe.length; i++)
+                 $("#id-country").append("<option value='"+europe[i]+"'>"+europe[i]+"</option>");
+               
+               if(el.val() === "oceanie" ) 
+               for(let i=0; i<oceanie.length; i++)
+                 $("#id-country").append("<option value='"+oceanie[i]+"'>"+oceanie[i]+"</option>");
+                 
+               
+               });
+               
+           });
+           
+            idbdate.min = new Date().toISOString().split("T")[0];
+    </script>
+    <script>
+        Highcharts.getJSON('https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data/world-population-density.json', function (data) {
+
+        // Prevent logarithmic errors in color calulcation
+        data.forEach(function (p) {
+            p.value = (p.value < 1 ? 1 : p.value);
+        });
+
+        // Initiate the chart
+        Highcharts.mapChart('map', {
+        
+            chart: {
+                map: 'custom/world'
+            },
+        
+            title: {
+                text: 'Coronavirus confirmed Cases in the World'
+            },
+        
+            legend: {
+                title: {
+                    text: 'Confirmed case in population',
+                    style: {
+                        color: ( // theme
+                            Highcharts.defaultOptions &&
+                            Highcharts.defaultOptions.legend &&
+                            Highcharts.defaultOptions.legend.title &&
+                            Highcharts.defaultOptions.legend.title.style &&
+                            Highcharts.defaultOptions.legend.title.style.color
+                        ) || 'black'
+                    }
+                }
+            },
+        
+            mapNavigation: {
+                enabled: true,
+                buttonOptions: {
+                    verticalAlign: 'bottom'
+                }
+            },
+        
+            tooltip: {
+                backgroundColor: 'none',
+                borderWidth: 0,
+                shadow: false,
+                useHTML: true,
+                padding: 0,
+                pointFormat: '<span class="f32"><span class="flag {point.properties.hc-key}">' +
+                    '</span></span> {point.name}<br>' +
+                    '<span style="font-size:30px">{point.value} cases</span>',
+                positioner: function () {
+                    return { x: 0, y: 250 };
+                }
+            },
+        
+            colorAxis: {
+                min: 1,
+                max: 10000000,
+                type: 'logarithmic'
+            },
+        
+            series: [{
+                data: {{mapAndProgression|safe}},
+                joinBy: ['iso-a3', 'code3'],
+                name: 'Population density',
+                states: {
+                    hover: {
+                        color: '#005757'
+                    }
+                }
+            }]
+        });
+        });
+
+    </script>
+    <script>
+        var timeFormat = "MM/DD/YYYY HH:mm";
+        var randomScalingFactor = function() {
+			return Math.round(Math.random() * 100);
+		};
+        /*function newDate(days) {
+          return moment()
+            .add(days, "d")
+            .toDate();
+        }*/
+        function newDate(day){
+            let today= new Date(day);
+            let beginDate = (today.getDate())+'/'+(today.getMonth()+1)+'/'+today.getFullYear().toString();
+            return beginDate;
+        }
+        let lasbelAbscisse = {{abscisse|safe}};
+        let i;
+        for(i=0; i<lasbelAbscisse.length; i++){
+            lasbelAbscisse[i] = newDate(lasbelAbscisse[i]);
+        }
+		var config = {
+			type: 'line',
+			data: {
+				labels: lasbelAbscisse,
+				datasets: [{
+					label: 'Confirmed',
+					fill: false,
+					backgroundColor: '#36A2EB',
+					borderColor: '#36A2EB',
+					data: {{confirmedDiagrammLine|safe}}
+				},{
+					label: 'Death',
+					fill: false,
+					backgroundColor: '#FF6384',
+					borderColor: '#FF6384',
+					data: {{deathsDiagrammLine|safe}}
+				},{
+					label: 'Recovered',
+					fill: false,
+					backgroundColor: '#4BC0C0',
+					borderColor: '#4BC0C0',
+					data: {{recoveredDiagrammLine|safe}}
+				}]
+			},
+			options: {
+				responsive: true,
+				title: {
+					display: true,
+					text: 'Corona virus cases in {{country|safe}}'
+				},
+                scales: {
+                  xAxes: [
+                    {
+                    //type: "time",
+                      time: {
+                        format: timeFormat,
+                        // round: 'day'
+                        tooltipFormat: "ll HH:mm"
+                      },
+                      scaleLabel: {
+                        display: true,
+                        labelString: "Dates"
+                      },
+                      ticks: {
+                        maxRotation: 0
+                      }
+                    }
+                  ],
+                  yAxes: [
+                    {
+                      scaleLabel: {
+                        display: true,
+                        labelString: "Number of cases"
+                      }
+                    }
+                  ]
+                },
+                pan: {
+                  enabled: true,
+                  mode: "x",
+                  speed: 10,
+                  threshold: 10
+                },
+                zoom: {
+                  enabled: true,
+                  drag: false,
+                  mode: "xy",
+                  limits: {
+                    max: 10,
+                    min: 0.5
+                  }
+                }
+			}
+		};
+
+		window.onload = function() {
+			var ctx = document.getElementById('diagramChart').getContext('2d');
+			window.myLine = new Chart(ctx, config);
+		};
+    </script>
+</html>
