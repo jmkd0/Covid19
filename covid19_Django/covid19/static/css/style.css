@@ -1,0 +1,180 @@
+#image-top{
+    color: white;
+    position: relative;
+    width: 100%;
+    height: 30vh;
+    margin-bottom: 5vh;
+    background-color: rgb(63, 82, 63);
+}
+.title-center{
+    font-size: 5vh;
+    font-family: Segoe UI;
+    position: absolute;
+      top:50%;
+      left:50%;
+      transform:translate(-50%, -50%);
+}
+#container {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1vh;
+    background-color: #fefefe;
+    border: 0.5vh solid #888;
+    border-radius: 3vh;
+}
+#reset{
+    width:90%; 
+    height: 8vw; 
+    margin: auto auto 2vh auto; 
+}
+#areset{
+    text-decoration: none;
+    float: right;
+    color: black;
+    padding: 1vh 1vh 1vh 1vh ;
+    font-size: 2vh;
+    border: none;
+    cursor: pointer;
+    opacity: 0.9;
+    border-radius: 1vh;
+    border: 0.4vh outset #c0c0c0;
+    background-color: #bebebe;
+}
+    #div-mobile, #div-graph-map {
+                display: -ms-flexbox;
+                display: flex;
+                -ms-flex-wrap: wrap;
+                flex-wrap: wrap;
+                width: 100%; 
+                margin: auto auto auto auto;
+            }
+            @media (min-width: 150vh) {
+              .mobile{
+                    -ms-flex-preferred-size: 0;
+                    flex-basis: 0;
+                    -ms-flex-positive: 1;
+                    flex-grow: 2;
+                    max-width: 100%;
+              }}
+            .mobile, .mobile-graph-map{
+                 position: relative;
+                 width: 100%;
+                 height: 50%;
+                 padding-right: 15px;
+                 padding-left: 15px;
+              }
+              @media (min-width: 105vh) {
+                .mobile-graph-map{
+                    -ms-flex-preferred-size: 0;
+                    flex-basis: 0;
+                    -ms-flex-positive: 1;
+                    flex-grow: 2;
+                    max-width: 100%;
+                }}
+            
+            #graph{
+                height: 80vh;
+                display: flex;
+                overflow: scroll;
+                overflow-x: hidden;
+                padding-right: 0px;
+                padding-left: 0px;
+            }
+            #map{
+                height: 80vh;
+            }
+            #div-graph-map{
+                padding-top: 30px;
+            }
+            #mobile1{
+                color: #E0E0E0;
+                margin-bottom: 10vh;
+                padding-bottom: 3vh;
+                border-radius: 1vh;
+                background-color:#333333;
+              }
+            #mobile2{
+              background-color:white;
+            }
+        .class-choice , #idbdate{
+          display: block;
+          width: 100%;
+          height: calc(1.5em + 0.75rem + 2px);
+          padding: 0.375rem 0.75rem;
+          font-size: 1rem;
+          font-weight: 400;
+          line-height: 1.5;
+          color: #495057;
+          background-color: #BEBEBE;
+          background-clip: padding-box;
+          border: 1px solid #ced4da;
+          border-radius: 0.25rem;
+          transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+        .class-choice:focus, #idbdate:focus {
+          color: #495057;
+          background-color: #F0F0F0;
+          border-color: #80bdff;
+          outline: 0;
+          box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+        .small-help{
+         width: 100%;
+         text-align: center;
+         font-style: italic;
+        }
+        #form{
+            position: relative;
+        }
+        .valider{
+            position: absolute;
+            color: black;
+                padding: 1vh 1vh 1vh 1vh ;
+                font-size: 2.4vh;
+                border: none;
+                cursor: pointer;
+                width: 12vh;
+                opacity: 0.9;
+                border-radius: 1vh;
+                border: 0.4vh outset #c0c0c0;
+                top:100%;
+                left:50%;
+                transform:translate(-50%, -70%);
+        }
+        #id-display{
+            font-size: 2.5vh;
+            display:flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #grid1-style{
+                width: 70%; 
+                height: 8vw; 
+                display: flex;
+                margin: auto auto auto auto;
+            }
+            .elt1{
+                flex: auto;
+            }
+            .elt2{
+                flex: auto;
+            }
+            input[type=date]{
+                font-size: 2vh;
+                border: none;
+                background: #bebebe;
+            }
+            footer{
+                width:100%; 
+                height: 20vh; 
+                position: relative;
+                background-color:#333333;
+            }
+            #foottext{
+                color: white;
+                position: absolute;
+                top:50%;
+                left:50%;
+                transform:translate(-50%, -50%);
+            }

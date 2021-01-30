@@ -1,4 +1,3 @@
-{% load static %}
 <html>
     <!-- https://www.chartjs.org/docs/latest/getting-started/ -->
     <!--https://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/maps/demo/tooltip/-->
@@ -6,7 +5,7 @@
         <title>Covid 19</title>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="initial-scale=1, user-scalable=no, maximum-scale=1, width=device-width, height=device-height">
-        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+        <link rel="stylesheet" type="text/css" href="static/css/style.css">
         <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
         <script src="https://code.highcharts.com/maps/highmaps.js"></script>
         <script src="https://code.highcharts.com/maps/modules/data.js"></script>
@@ -24,7 +23,7 @@
             <h1 class="title-center">COVID 19 DashBoard</h1>
         </div>
         <div id='reset' >
-            <a id="areset" href="/covid19">World Information</a>
+            <a id="areset" href="/">World Information</a>
         </div>
         <div id="container">
             
@@ -32,7 +31,7 @@
                 
                 <div class="mobile" id="mobile1">
                     <h2>Find information on the progression of covid 19</h2>
-                    <form action="/getCountry/" id="form" method="post">{% csrf_token %}
+                    <form action="view_country" id="form" method="post">
                         <div class="">
                             <label for="id-continent">Continent</label>
                             <select id="id-continent" class="class-choice" name="continent">
@@ -68,45 +67,45 @@
                         <table>
                            <tbody>
                                <tr>
-                                <td><h1>Country: {{country|safe}}</h1></td>
+                                <td><h1>Country: {{response.country}}</h1></td>
                                </tr>
-                               <tr><td colspan="2"><h2>Information since the start of covid 19 in {{country|safe}}</h2></td></tr>
+                               <tr><td colspan="2"><h2>Information since the start of covid 19 in {{response.country}}</h2></td></tr>
                                
                                {% if predict == True %}
-                                 <tr style="background-color: rgb(228, 230, 229); "><td colspan="2"><h2>Prediction of new cases until <span style="color:rgb(25, 28, 214)">{{predictedDate|safe}}</span></h2></td></tr>
+                                 <tr style="background-color: rgb(228, 230, 229); "><td colspan="2"><h2>Prediction of new cases until <span style="color:rgb(25, 28, 214)">{{response.predictedDate}}</span></h2></td></tr>
                                  <tr style="background-color: rgb(228, 230, 229); color:#36A2EB">
                                      <td><h3>Forecast confirmed</h3></td>
-                                     <td><h3>{{confirmedForcast|safe}} new cases</h3></td>
+                                     <td><h3>{{response.confirmedForcast}} new cases</h3></td>
                                  </tr>
                                  <tr style="background-color: rgb(228, 230, 229); color:#4BC0C0">
                                      <td><h3>Forecast Recovered</h3></td>
-                                     <td><h3>{{recoveredForcast|safe}} new cases</h3></td>
+                                     <td><h3>{{response.recoveredForcast}} new cases</h3></td>
                                  </tr>
                                  <tr style="background-color: rgb(228, 230, 229); color:#FF6384;">
                                      <td><h3>Forecast Death</h3></td>
-                                     <td><h3>{{deathsForcast|safe}} new cases</h3></td>
+                                     <td><h3>{{response.deathsForcast}} new cases</h3></td>
                                  </tr><hr><br>
                                {% endif %}
                                 
                                 <tr>
                                     <td><h3>Last Update</h3></td>
-                                    <td><h3>{{lastUpdate|safe}}</h3></td>
+                                    <td><h3>{{response.lastUpdate}}</h3></td>
                                 </tr>
                                 <tr style="color:#36A2EB">
                                     <td><h3>Confirmed</h3></td>
-                                    <td><h3>{{wholeConfirmed|safe}} cases</h3></td>
+                                    <td><h3>{{response.wholeConfirmed}} cases</h3></td>
                                 </tr>
                                 <tr style="color:#4BC0C0">
                                     <td><h3>Recovered</h3></td>
-                                    <td><h3>{{wholeRecovered|safe}} cases</h3></td>
+                                    <td><h3>{{response.wholeRecovered}} cases</h3></td>
                                 </tr>
                                 <tr style="color:#FF6384;">
                                     <td><h3>Death </h3></td>
-                                    <td><h3>{{wholeDeaths|safe}} cases</h3></td>
+                                    <td><h3>{{response.wholeDeaths}} cases</h3></td>
                                 </tr>
                                 <tr style="color:">
                                     <td><h3>Active </h3></td>
-                                    <td><h3>{{wholeActive|safe}} cases</h3></td>
+                                    <td><h3>{{response.wholeActive}} cases</h3></td>
                                 </tr>
                                 <hr>
                                 <tr style="font-weight: bold;">
@@ -116,11 +115,11 @@
                                 </tr>
                                 <tr style="color:#4BC0C0">
                                     <td><h3>Recovered rate</h3></td>
-                                    <td><h3>{{rateRecovered|safe}}%</h3></td>
+                                    <td><h3>{{response.rateRecovered}}%</h3></td>
                                 </tr>
                                 <tr style="color:#FF6384;">
                                     <td><h3>Death rate</h3></td>
-                                    <td><h3>{{rateDeaths|safe}}%</h3></td>
+                                    <td><h3>{{response.rateDeaths}}%</h3></td>
                                 </tr>
                                 
                             </tbody>
@@ -132,9 +131,9 @@
         </div>
         <div id="div-graph-map">
             <div class="mobile-graph-map">
-                {% if showMap == True %}
+                {% if response.showMap == True %}
                 <div id="map"> </div>
-                {% elif showMap == False %}
+                {% elif response.showMap == False %}
                 <div id="diagram" style=""> 
                     <canvas id="diagramChart" style="overflow: auto; white-space: nowrap;"></canvas>
                 </div>
@@ -168,27 +167,27 @@
     <footer>
         <h2 id="foottext">2020-Copyright-J.M.K.D.</h2>
     </footer>
-
+    
     <script>
         var horizontalBarChartData = {
-			labels: {{countryNames|safe}},
+			labels: {{response.countryNames|tojson}},
 			datasets: [{
 				label: 'Confirmed',
 				backgroundColor: '#36A2EB',
 				borderColor: '#36A2EB',
-				data: {{confirmedDiagramm}}
+				data: {{response.confirmedDiagramm|tojson}}
 			}, 
             {
 				label: 'Death',
 				backgroundColor: '#FF6384',
 				borderColor: '#FF6384',
-				data: {{deathsDiagramm}}
+				data: {{response.deathsDiagramm|tojson}}
 			},
             {
 				label: 'Recovered',
 				backgroundColor: '#4BC0C0',
 				borderColor: '#4BC0C0',
-				data: {{recoveredDiagramm}}
+				data: {{response.recoveredDiagramm|tojson}}
 			}]
 
 		};
@@ -249,10 +248,7 @@
                let oceanie = ['Australia','Géographie','Histoire et Archéologie','Philosophie','Scoliologie','Fiji','New Zealand','Papua New Guinea'];
                let autre = ['Diamond Princess','MS Zaandam'];
                
-                console.log("tes fou")
-               
            $("#id-continent").change(function() {
-               console.log("tes fou bien")
              let el = $(this) ;
              let element = document.getElementById("id-country");
                while (element.firstChild) {
@@ -287,20 +283,20 @@
             idbdate.min = new Date().toISOString().split("T")[0];
     </script>
     <script>
+        
         Highcharts.getJSON('https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data/world-population-density.json', function (data) {
 
         // Prevent logarithmic errors in color calulcation
         data.forEach(function (p) {
             p.value = (p.value < 1 ? 1 : p.value);
         });
-
         // Initiate the chart
         Highcharts.mapChart('map', {
         
             chart: {
                 map: 'custom/world'
             },
-        
+        	
             title: {
                 text: 'Coronavirus confirmed Cases in the World'
             },
@@ -348,7 +344,7 @@
             },
         
             series: [{
-                data: {{mapAndProgression|safe}},
+                data: JSON.parse({{response.mapAndProgression|tojson}}),
                 joinBy: ['iso-a3', 'code3'],
                 name: 'Population density',
                 states: {
@@ -376,7 +372,7 @@
             let beginDate = (today.getDate())+'/'+(today.getMonth()+1)+'/'+today.getFullYear().toString();
             return beginDate;
         }
-        let lasbelAbscisse = {{abscisse|safe}};
+        let lasbelAbscisse = {{response.abscisse|tojson}};
         let i;
         for(i=0; i<lasbelAbscisse.length; i++){
             lasbelAbscisse[i] = newDate(lasbelAbscisse[i]);
@@ -390,26 +386,26 @@
 					fill: false,
 					backgroundColor: '#36A2EB',
 					borderColor: '#36A2EB',
-					data: {{confirmedDiagrammLine|safe}}
+					data: {{response.confirmedDiagrammLine|tojson}}
 				},{
 					label: 'Death',
 					fill: false,
 					backgroundColor: '#FF6384',
 					borderColor: '#FF6384',
-					data: {{deathsDiagrammLine|safe}}
+					data: {{response.deathsDiagrammLine|tojson}}
 				},{
 					label: 'Recovered',
 					fill: false,
 					backgroundColor: '#4BC0C0',
 					borderColor: '#4BC0C0',
-					data: {{recoveredDiagrammLine|safe}}
+					data: {{response.recoveredDiagrammLine|tojson}}
 				}]
 			},
 			options: {
 				responsive: true,
 				title: {
 					display: true,
-					text: 'Corona virus cases in {{country|safe}}'
+					text: 'Corona virus cases in {{country}}'
 				},
                 scales: {
                   xAxes: [
